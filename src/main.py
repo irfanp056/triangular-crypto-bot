@@ -167,17 +167,17 @@ def get_precision(pairs):
 def triangle(pairs):
     strip = lambda x: x.replace("USDT", "")
     if pairs[0][-4:] == 'USDT':
-        first = float(requests.get(f"https://api.binance.com/api/v3/ticker/price?symbol={pairs[0]}").json()['price'])
+        first = float(requests.get("https://api.binance.com/api/v3/ticker/price?symbol=%s" % pairs[0]).json()['price'])
     else:
-        first = 1/float(requests.get(f"https://api.binance.com/api/v3/ticker/price?symbol={pairs[0]}").json()['price'])
+        first = 1/float(requests.get("https://api.binance.com/api/v3/ticker/price?symbol=%s" % pairs[0]).json()['price'])
     if strip(pairs[0]) == pairs[1][:-len(strip(pairs[0]))]:
-        second = 1/float(requests.get(f"https://api.binance.com/api/v3/ticker/price?symbol={pairs[1]}").json()['price'])
+        second = 1/float(requests.get("https://api.binance.com/api/v3/ticker/price?symbol=%s" % pairs[1]).json()['price'])
     else:
-        second = float(requests.get(f"https://api.binance.com/api/v3/ticker/price?symbol={pairs[1]}").json()['price'])
+        second = float(requests.get("https://api.binance.com/api/v3/ticker/price?symbol=%s" % pairs[1]).json()['price'])
     if pairs[2][:4] == "USDT":
-        third = float(requests.get(f"https://api.binance.com/api/v3/ticker/price?symbol={pairs[2]}").json()['price'])
+        third = float(requests.get("https://api.binance.com/api/v3/ticker/price?symbol=%s" % pairs[2]).json()['price'])
     else:
-        third = 1/float(requests.get(f"https://api.binance.com/api/v3/ticker/price?symbol={pairs[2]}").json()['price'])
+        third = 1/float(requests.get("https://api.binance.com/api/v3/ticker/price?symbol=%s" % pairs[2]).json()['price'])
     return first, second, third
 
 #Loop printing if the three pairs are above a certain margin
