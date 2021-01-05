@@ -12,6 +12,7 @@ headers = {
     'X-MBX-APIKEY': KEY
 }
 FEE = 0.001
+input = 50
 
 def convert(pair):
     #Used to find the exchange rate between two currencies
@@ -32,22 +33,19 @@ class triangle():
         self.pair1_invert = True
         self.pair2_invert = (self.pair1[:-4] != self.pair2[:len(self.pair1[:-4])])
         self.pair3_invert = False
-
-        #Amount of money to spend
-        self.input = 50
     
     def get_conversions(self):
         #Retrives the exchange rates in a triangle and the final price
         c1 = convert_invert(self.pair1)
         c2 = convert_invert(self.pair2) if self.pair2_invert else convert(self.pair2)
         c3 = convert(self.pair3)
-        return round(self.input*c1*c2*c3, 6)
+        return round(input*c1*c2*c3, 6)
 
 def enact(pairs):
     #Initiates instance of triangle
     triangleObj = triangle(pairs)
-    input = triangleObj.input
     transac = str(pairs[0]) + " -> " + str(pairs[1]) + " -> " + str(pairs[2])
+    global input
     #Infinite loop (stopped by moving mouse to top-left of screen) that gets the price change,
     #determines if it's profitable, and if so, records it in a csv file
     while True:
@@ -58,8 +56,10 @@ def enact(pairs):
                 writer = csv.writer(file)
                 writer.writerow([datetime.datetime.now(), transac, round(f-input, 6)])
             file.close()
+            input += round(f-input, 6)
         time.sleep(0.5)
         if pyautogui.position() == Point(x=0, y=0):
+            print("Final Balance: %s" % input)
             break
 
 def main():
