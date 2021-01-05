@@ -1,5 +1,6 @@
-#Related functions that might be useful
+#Related functions that might be useful (in no particular order)
 
+#Information about user's account (balances, persmissions, etc.)
 def snapshot():
     PATH = '/api/v3/account'
     timestamp = int((time.time() *1000))
@@ -12,6 +13,7 @@ def snapshot():
     r = requests.get(url, headers=headers, params=params)
     return r.json()
 
+#Getting the server time - useful to stay synced
 def get_server_time():
     PATH =  '/api/v1/time'
     params = None
@@ -21,6 +23,7 @@ def get_server_time():
     print(url)
     print(r.json())
 
+#Order a pair
 def order(pair, side, quantity):
     PATH = '/api/v3/order'
     timestamp = int(time.time() * 1000)
@@ -38,6 +41,7 @@ def order(pair, side, quantity):
     r = requests.post(url, headers=headers, params=params)
     print(r.json())
 
+#See all available orders on the exchange
 def open_orders():
     PATH = '/api/v3/openOrders'
     timestamp = int(time.time() * 1000)
@@ -50,27 +54,30 @@ def open_orders():
     r = requests.get(url, headers=headers, params=params)
     print(r.json())
 
+#View exchange order book
 def order_book():
     PATH = '/api/v3/ticker/bookTicker'
     url = urljoin(BASE_URL, PATH)
     r = requests.get(url)
     print(r.json())
 
+#Custom rounding down function
 def round_down(n, decimals=0):
     multiplier = 10 ** decimals
     return math.floor(n * multiplier) / multiplier
 
-#Returns all pairs on Binance
+#Lists all pairs on Binance
 def get_pairs():
     PATH = '/api/v3/exchangeInfo'
     url = urljoin(BASE_URL, PATH)
     r = requests.get(url, headers=headers)
     return r.json()
 
+#Strip specific letters (e.g "USDT") from a string
 def stripf(word, term):
     return word.replace(term, "")
 
-#Returns whether each pair needs to be bought or sold in triangular arbitrage transaction
+#Returns whether each pair in a triangleneeds to be bought or sold in triangular arbitrage transaction
 def sides(pairs):
     strip = lambda x: x.replace("USDT", "")
     if pairs[0][-4:] == 'USDT':
@@ -99,14 +106,17 @@ def get_precision(pairs):
     print("precisions: %s" % precisions)
     return precisions
 
+#List allpairs on the exchange
 def print_all_pairs():
     r = requests.get("https://api.binance.com/api/v3/ticker/price")
     print(r.json())
 
+#Find price of specific pair
 def price(pair):
     r = requests.get(f"https://api.binance.com/api/v3/ticker/price?symbol={pair}")
     return r.json()
 
+#Find the continuous price change of one pair
 def price_change(pair):
     p = price(pair)
     print(p)
