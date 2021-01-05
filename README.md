@@ -1,3 +1,3 @@
 # triangular-crypto-bot
-A cryptocurrency trading bot using triangular arbitrage on the Binance exchange.
+A triangular arbitrage cryptocurrency trading bot simulation using the Binance API.
 Made by AkiraY1
